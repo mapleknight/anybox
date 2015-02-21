@@ -1,8 +1,6 @@
 package com.anybox.database;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

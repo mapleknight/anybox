@@ -1,14 +1,18 @@
 package com.anybox.servlet;
 
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import com.anybox.beans.ReturnObject;
+import com.anybox.common.StateCode;
 import com.anybox.service.AccountService;
 
 public class SignInServlet extends HttpServlet{
@@ -29,18 +33,41 @@ public class SignInServlet extends HttpServlet{
 		response.setCharacterEncoding("UTF-8");
 	    response.setContentType("application/json; charset=utf-8");
 	    
-	    String name = request.getParameter("name");
-	    String password = request.getParameter("password");
-	    
-	    
-	    JSONObject result = accountService.checkUser(name, password);
 	    PrintWriter out = null;
-	    try {
+		JSONObject result = null;
+
+		try {
 			out = response.getWriter();
-			out.append(result.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					(ServletInputStream) request.getInputStream(), "utf-8"));
+			StringBuffer sb = new StringBuffer("");
+			String temp;
+			while ((temp = br.readLine()) != null) {
+				sb.append(temp);
+			}
+			br.close();
+			
+			
+			String acceptjson = sb.toString();  
+            if (acceptjson != "") {  
+                JSONObject jo = JSONObject.fromObject(acceptjson);
+                
+                String name = jo.getString("name");
+    			String password = jo.getString("password");
+    			
+    			result = accountService.checkUser(name, password);
+            }
+
+            
+			
+		} catch (Exception e) {
+			//e.printStackTrace();
+			result = JSONObject.fromObject(new ReturnObject(StateCode.FAILED_SYSTEM));
 		} finally {
+			result.remove("content");
+			out.append(result.toString());
+			
 			if (out != null) {
 				out.close();
 			}

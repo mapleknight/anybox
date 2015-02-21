@@ -37,6 +37,8 @@ public class SignOnServlet extends HttpServlet {
 		JSONObject result = null;
 
 		try {
+			out = response.getWriter();
+			
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					(ServletInputStream) request.getInputStream(), "utf-8"));
 			StringBuffer sb = new StringBuffer("");
@@ -57,7 +59,7 @@ public class SignOnServlet extends HttpServlet {
     			result = accountService.registerUser(name, password);
             }
 
-            out = response.getWriter();
+            
 			
 		} catch (Exception e) {
 			//e.printStackTrace();
