@@ -43,12 +43,12 @@
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>PaymentServlet</servlet-name>
-		<servlet-class>com.anybox.servlet.PaymentServlet</servlet-class>
+		<servlet-name>CardServlet</servlet-name>
+		<servlet-class>com.anybox.servlet.CardServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>PaymentServlet</servlet-name>
-		<url-pattern>/payment</url-pattern>
+		<servlet-name>CardServlet</servlet-name>
+		<url-pattern>/card/*</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
